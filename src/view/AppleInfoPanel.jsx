@@ -58,7 +58,6 @@ export default props => {
         destroyOnClose
         maskClosable={false}
         width={styles.rootPanel.width}
-        // style={{ paddingTop: 0 }}
         bodyStyle={{ paddingTop: 20 }}
         visible={props.visible}
         onCancel={() => { props.onClose() }}
