@@ -54,7 +54,7 @@ export default props => {
         </>
     }, [props.data])
     return <Modal
-        title='申请单数据'
+        title={`申请单【${props.data.code}】`}
         destroyOnClose
         maskClosable={false}
         width={styles.rootPanel.width}

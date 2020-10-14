@@ -45,7 +45,7 @@ export default _ => {
         left join (select * from users where effective = 1) users on users.id = orders.create_user
         left join (select * from levels where effective = 1)levels on levels.id = users.level_id
         where order_search_list.is_read = 0 
-        order by order_search_list.id desc) t1
+        order by order_search_list.id desc limit 1) t1
         left join (select * from user_map_major where effective = 1) u_m_j on u_m_j.user_id = t1.create_user
         left join (select * from majors  where effective = 1) majors on majors.id = u_m_j.mj_id
         group by id
