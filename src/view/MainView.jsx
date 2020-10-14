@@ -64,9 +64,10 @@ export default _ => {
             }
         } else { console.log('没有最新数据') }
     }, [])
-    const updateHandler = useCallback(() => {
+    const updateHandler = useCallback(async () => {
         let sql = `update order_search_list set is_read = 1 where order_code = ${lastCode}`
-        HttpApi.obs({ sql })
+        await HttpApi.obs({ sql })
+        lastCode = ''
     }, [])
     useEffect(() => {
         window.onresize = () => {
