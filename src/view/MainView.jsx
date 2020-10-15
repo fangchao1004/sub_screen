@@ -61,7 +61,7 @@ export default _ => {
             } else {
                 console.log('老的搜索记录；不展示')
             }
-        } else { console.log('没有最新数据'); setVisible(false) }
+        } else { console.log('没有最新数据'); setVisible(false); lastCode = ''; }
     }, [])
     const updateHandler = useCallback(async () => {
         let sql = `update order_search_list set is_read = 1 where order_code = ${lastCode}`
