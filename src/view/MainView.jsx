@@ -6,12 +6,13 @@ import '../css/demo.css'
 import '../css/normalize.css'
 import '../css/style.css'
 import { Button } from 'antd';
-
+import moment from 'moment';
 let lastCode = '';
 export default _ => {
     const [isFullScreen, setIsFullScreen] = useState(document.isFullScreen || document.webkitIsFullScreen)
     const [data, setData] = useState({})
     const [visible, setVisible] = useState(false)
+    const [timeStr, setTimeStr] = useState('')
     const handleFullScreen = useCallback(() => {
         let element = document.documentElement
         if (isFullScreen) {
@@ -69,6 +70,9 @@ export default _ => {
         await HttpApi.obs({ sql })
         lastCode = ''
     }, [])
+    const loopGetTime = useCallback(() => {
+        setTimeStr(moment().format('YYYY-MM-DD HH:mm:ss'))
+    }, [])
     useEffect(() => {
         window.onresize = () => {
             setIsFullScreen(document.isFullScreen || document.webkitIsFullScreen)
@@ -76,12 +80,17 @@ export default _ => {
         setInterval(() => {
             getData()
         }, 5000)
-    }, [getData])
+        setInterval(() => {
+            loopGetTime()
+        }, 1000)
+    }, [getData, loopGetTime])
     return <div style={styles.root}>
         <AppleInfoPanel data={data} visible={visible} onClose={() => { setVisible(false); updateHandler() }} />
         <div className="satic-area">
-            <div style={{ textAlign: 'right' }}>
-                <Button icon={!isFullScreen ? <FullscreenOutlined style={styles.icon} /> : <FullscreenExitOutlined style={styles.icon} />} style={{ zIndex: 10 }} type="primary" onClick={() => {
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ ...styles.timefont, ...styles.icon }}>{timeStr}</div>
+                <iframe style={styles.icon} title='x' width="420" scrolling="no" height="60" frameborder="0" allowtransparency="true" src="https://i.tianqi.com?c=code&id=12&color=%23&bgc=%23&bdc=%23&icon=1&num=3&site=19"></iframe>
+                <Button icon={!isFullScreen ? <FullscreenOutlined style={styles.icon} /> : <FullscreenExitOutlined style={styles.icon} />} style={{ zIndex: 10 }} type="ghost" onClick={() => {
                     handleFullScreen()
                 }}></Button>
             </div>
@@ -97,7 +106,10 @@ const styles = {
         backgroundColor: '#b5f5ec'
     },
     icon: {
-        // fontSize: 24,
         zIndex: 10
+    },
+    timefont: {
+        fontSize: 24,
+        color: '#8c8c8c'
     }
 }

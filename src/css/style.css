@@ -44,3 +44,9 @@ html, body {
   from { background-position: 0 0; }
   to { background-position: 30000% 0; }
 }
+.row{
+  background-color: #e6f7ff
+}
+.lastrow{
+  background-color: #fafafa
+}

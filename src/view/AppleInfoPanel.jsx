@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
-import { Modal, Tag, Table, Descriptions } from 'antd';
+import { Modal, Tag, Table, Row, Col, Descriptions } from 'antd';
+import '../css/style.css'
 export default props => {
     const RenderDetail = useCallback((record) => {
         let sum_price = 0;///总价
@@ -12,49 +13,65 @@ export default props => {
         tempList.push({ store_name: '总计', count: sum_count, price: sum_price, isSum: true })
         let data = tempList.map((item, index) => { item.key = index; return item })
         const columns = [{
-            title: '物料', dataIndex: 'store_name',
+            title: <div style={styles.font1}>物料</div>, dataIndex: 'store_name',
             render: (text, record) => {
                 if (record.isSum) {
-                    return <Tag color={'#f5222d'}>{text}</Tag>
+                    return <Tag color={'#f5222d'} style={styles.font1}>{text}</Tag>
                 }
-                return text
+                return <div style={styles.font1}>{text}</div>
             }
         }, {
-            title: '数量', dataIndex: 'count',
+            title: <div style={styles.font1}>数量</div>, dataIndex: 'count',
             render: (text, record) => {
                 if (record.isSum) {
-                    return <Tag color={'red'}>{text}</Tag>
+                    return <Tag color={'red'} style={styles.font1}>{text}</Tag>
                 }
-                return text
+                return <div style={styles.font1}>{text}</div>
             }
         }, {
-            title: '单价【元】', dataIndex: 'price',
+            title: <div style={styles.font1}>单价【元】</div>, dataIndex: 'price',
             render: (text, record) => {
                 if (record.isSum) {
-                    return <Tag color={'red'}>{text}</Tag>
+                    return <Tag color={'red'} style={styles.font1}>{text}</Tag>
                 }
-                return text
+                return <div style={styles.font1}>{text}</div>
             }
         }]
         return <>
-            <div style={styles.title}>物料信息</div>
-            <Table
-                style={{ width: '100%', marginTop: 20 }}
-                bordered
-                columns={columns}
-                dataSource={data}
-                pagination={false}
-            />
-            <Descriptions title="申请人信息" bordered size="large" column={2} style={{ marginTop: 20 }}>
-                <Descriptions.Item label="姓名">{props.data.name}</Descriptions.Item>
-                <Descriptions.Item label="部门">{props.data.level_name}</Descriptions.Item>
-                <Descriptions.Item label="专业">{props.data.major_name_all}</Descriptions.Item>
-                <Descriptions.Item label="联系方式">{props.data.username}</Descriptions.Item>
-            </Descriptions>
+            <Row gutter={24}>
+                <Col span={18}>
+                    <div style={styles.title}>物料信息</div>
+                    <Table
+                        rowClassName={(record, index) => {
+                            if (index < data.length - 1) {
+                                if (index % 2 !== 0) {
+                                    return 'row'
+                                }
+                                else { return '' }
+                            } else {
+                                return 'lastrow'
+                            }
+                        }}
+                        style={{ width: '100%', marginTop: 20 }}
+                        bordered
+                        columns={columns}
+                        dataSource={data}
+                        pagination={false}
+                    />
+                </Col>
+                <Col span={6}>
+                    <Descriptions title="领料人信息" bordered size="large" column={1} >
+                        <Descriptions.Item label={<div style={styles.font1}>{'姓名'}</div>}><div style={styles.font1}>{props.data.name}</div></Descriptions.Item>
+                        <Descriptions.Item label={<div style={styles.font1}>{'联系方式'}</div>}><div style={styles.font1}>{props.data.username}</div></Descriptions.Item>
+                        <Descriptions.Item label={<div style={styles.font1}>{'部门'}</div>}><div style={styles.font1}>{props.data.level_name}</div></Descriptions.Item>
+                        <Descriptions.Item label={<div style={styles.font1}>{'专业'}</div>}><div style={styles.font1}>{props.data.major_name_all}</div></Descriptions.Item>
+                    </Descriptions>
+                </Col>
+            </Row>
         </>
     }, [props.data])
     return <Modal
-        title={`申请单【${props.data.code}】`}
+        title={<div style={styles.font1}>{`申请单【${props.data.code}】`}</div>}
         destroyOnClose
         maskClosable={false}
         width={styles.rootPanel.width}
@@ -78,5 +95,8 @@ const styles = {
         fontWeight: 'bold',
         fontSize: ' 16px',
         lineHeight: 1.5715,
-    }
+    },
+    font1: {
+        fontSize: 16
+    },
 }
