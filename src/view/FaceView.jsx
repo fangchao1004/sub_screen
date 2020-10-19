@@ -91,7 +91,6 @@ export default _ => {
         let loop = setInterval(() => {
             setTimeStr(moment().format('YYYY-MM-DD HH:mm:ss'))
         }, 1000)
-        getFaceData()
         let loop2 = setInterval(() => {
             getFaceData()
         }, 1000)
