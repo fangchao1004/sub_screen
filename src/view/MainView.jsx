@@ -33,7 +33,7 @@ export default _ => {
                 lastCode = result.data.data[0].code
                 let faceid = result.data.data[0].faceid
                 let data = result.data.data[0];
-                let sql = `select id,gid,sid,did,uid,fid from faces where uid = '${faceid}' order by id desc limit 1`
+                let sql = `select id,gid,sid,did,uid,fid from faces where uid = '${faceid}' order by id limit 1` ///以最早的照片作为证件照
                 let result2 = await HttpApi.obs({ sql })
                 if (result2.data.code === 0) {
                     let { gid, sid, fid, did, uid } = result2.data.data[0]
