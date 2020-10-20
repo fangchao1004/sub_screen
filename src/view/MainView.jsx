@@ -13,7 +13,7 @@ export default _ => {
 
     const getData = useCallback(async () => {
         let sql = `select t1.*,group_concat(u_m_j.mj_id) as major_id_all,group_concat(majors.name) as major_name_all from
-        (select orders.*,users.name,users.permission,users.username,
+        (select orders.*,users.name,users.permission,users.username,users.faceid,
         levels.name as level_name from order_search_list 
         left join (select * from orders where isdelete = 0) orders on orders.code = order_search_list.order_code
         left join (select * from users where effective = 1) users on users.id = orders.create_user
@@ -31,7 +31,15 @@ export default _ => {
             if (result.data.data[0].code !== lastCode) {
                 console.log('order新的搜索记录；展示')
                 lastCode = result.data.data[0].code
-                setData(result.data.data[0])
+                let faceid = result.data.data[0].faceid
+                let data = result.data.data[0];
+                let sql = `select id,gid,sid,did,uid,fid from faces where uid = '${faceid}' order by id desc limit 1`
+                let result2 = await HttpApi.obs({ sql })
+                if (result2.data.code === 0) {
+                    let { gid, sid, fid, did, uid } = result2.data.data[0]
+                    data = { ...data, gid, sid, fid, did, uid }
+                }
+                setData(data)
                 setVisible(true)
             } else {
                 console.log('order老的搜索记录；不展示')

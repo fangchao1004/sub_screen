@@ -2,6 +2,8 @@ import React, { useCallback } from 'react';
 import { Modal, Tag, Table, Row, Col, Descriptions } from 'antd';
 import '../css/style.css'
 export default props => {
+    let { gid, sid, fid, did, uid } = props.data;
+    const imgUrl = 'https://xiaomei-face.oss-cn-hangzhou.aliyuncs.com/' + gid + '/' + sid + '/' + did + '/' + uid + '/' + fid + '.png'
     const RenderDetail = useCallback((record) => {
         let sum_price = 0;///总价
         let sum_count = 0;///总件数
@@ -39,7 +41,7 @@ export default props => {
         }]
         return <>
             <Row gutter={24}>
-                <Col span={18}>
+                <Col span={14}>
                     <div style={styles.title}>物料信息</div>
                     <Table
                         rowClassName={(record, index) => {
@@ -59,17 +61,18 @@ export default props => {
                         pagination={false}
                     />
                 </Col>
-                <Col span={6}>
-                    <Descriptions title="领料人信息" bordered size="large" column={1} >
+                <Col span={10}>
+                    <Descriptions title="领料人信息" bordered size="large" column={2} >
                         <Descriptions.Item label={<div style={styles.font1}>{'姓名'}</div>}><div style={styles.font1}>{props.data.name}</div></Descriptions.Item>
-                        <Descriptions.Item label={<div style={styles.font1}>{'联系方式'}</div>}><div style={styles.font1}>{props.data.username}</div></Descriptions.Item>
-                        <Descriptions.Item label={<div style={styles.font1}>{'部门'}</div>}><div style={styles.font1}>{props.data.level_name}</div></Descriptions.Item>
-                        <Descriptions.Item label={<div style={styles.font1}>{'专业'}</div>}><div style={styles.font1}>{props.data.major_name_all}</div></Descriptions.Item>
+                        <Descriptions.Item label={<div style={styles.font1}>{'照片'}</div>}>{imgUrl.indexOf('undefined') === -1 ? <img style={{ width: 3 * 70, height: 4 * 70 }} src={imgUrl} alt='' /> : '-'}</Descriptions.Item>
+                        <Descriptions.Item span={2} label={<div style={styles.font1}>{'联系方式'}</div>}><div style={styles.font1}>{props.data.username}</div></Descriptions.Item>
+                        <Descriptions.Item span={2} label={<div style={styles.font1}>{'部门'}</div>}><div style={styles.font1}>{props.data.level_name}</div></Descriptions.Item>
+                        <Descriptions.Item span={2} label={<div style={styles.font1}>{'专业'}</div>}><div style={styles.font1}>{props.data.major_name_all}</div></Descriptions.Item>
                     </Descriptions>
                 </Col>
             </Row>
         </>
-    }, [props.data])
+    }, [props.data, imgUrl])
     return <Modal
         title={<div style={styles.font1}>{`申请单【${props.data.code}】`}</div>}
         destroyOnClose
