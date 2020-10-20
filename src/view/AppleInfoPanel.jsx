@@ -41,7 +41,7 @@ export default props => {
         //     }
         // },
         {
-            title: <div style={styles.font1}>标签</div>, dataIndex: 'tags',
+            title: <div style={styles.font1}>属性</div>, dataIndex: 'tags',
             render: (text, record) => {
                 return text ? text.map((item, index) => {
                     return <Tag key={index} color={item.color}>{item.name}</Tag>
