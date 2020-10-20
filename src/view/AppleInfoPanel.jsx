@@ -69,6 +69,12 @@ export default props => {
                         <Descriptions.Item span={2} label={<div style={styles.font1}>{'部门'}</div>}><div style={styles.font1}>{props.data.level_name}</div></Descriptions.Item>
                         <Descriptions.Item span={2} label={<div style={styles.font1}>{'专业'}</div>}><div style={styles.font1}>{props.data.major_name_all}</div></Descriptions.Item>
                     </Descriptions>
+                    <Descriptions bordered size="large" column={1} style={{ marginTop: 20 }}>
+                        <Descriptions.Item label={<div style={styles.font1}>{'抓拍记录'}</div>}>{props.data.capture_list.length > 0 ? props.data.capture_list.map((item, index) => {
+                            const imgUrl = 'https://xiaomei-face.oss-cn-hangzhou.aliyuncs.com/' + item.gid + '/' + item.sid + '/' + item.did + '/' + item.uid + '/' + item.fid + '.png'
+                            return < img key={index} style={{ width: 3 * 30, height: 4 * 30, marginRight: 10 }} src={imgUrl} alt='' />
+                        }) : '-'}</Descriptions.Item>
+                    </Descriptions>
                 </Col>
             </Row>
         </>

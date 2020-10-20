@@ -6,6 +6,7 @@ import '../css/normalize.css'
 import '../css/style.css'
 import { Row, Col } from 'antd';
 import FaceView from './FaceView';
+import moment from 'moment';
 let lastCode = '';
 export default _ => {
     const [data, setData] = useState({})
@@ -38,6 +39,26 @@ export default _ => {
                 if (result2.data.code === 0) {
                     let { gid, sid, fid, did, uid } = result2.data.data[0]
                     data = { ...data, gid, sid, fid, did, uid }
+                }
+                let sql3 = `select * from faces where createdAt>'${moment().add(-5, 'minutes').format('YYYY-MM-DD HH:mm:ss')}' order by id desc`
+                let result3 = await HttpApi.obs({ sql: sql3 })
+                if (result3.data.code === 0) {
+                    let findList = []
+                    for (let index = 0; index < result3.data.data.length; index++) {
+                        const element = result3.data.data[index];
+                        if (element.uid === faceid) {
+                            findList.push(element);
+                            break;
+                        }
+                    }
+                    if (findList.length === 0) {
+                        data = { ...data, capture_list: result3.data.data }
+                    } else {
+                        ///更新orders表中的capture_id字段
+                        let sql4 = `update orders set capture_id = ${findList[0].id} where code = '${lastCode}'`
+                        await HttpApi.obs({ sql: sql4 })
+                        data = { ...data, capture_list: findList }
+                    }
                 }
                 setData(data)
                 setVisible(true)
