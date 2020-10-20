@@ -30,13 +30,22 @@ export default props => {
                 }
                 return <div style={styles.font1}>{text}</div>
             }
-        }, {
-            title: <div style={styles.font1}>单价【元】</div>, dataIndex: 'price',
+        },
+        //  {
+        //     title: <div style={styles.font1}>单价【元】</div>, dataIndex: 'price',
+        //     render: (text, record) => {
+        //         if (record.isSum) {
+        //             return <Tag color={'red'} style={styles.font1}>{text}</Tag>
+        //         }
+        //         return <div style={styles.font1}>{text}</div>
+        //     }
+        // },
+        {
+            title: <div style={styles.font1}>标签</div>, dataIndex: 'tags',
             render: (text, record) => {
-                if (record.isSum) {
-                    return <Tag color={'red'} style={styles.font1}>{text}</Tag>
-                }
-                return <div style={styles.font1}>{text}</div>
+                return text ? text.map((item, index) => {
+                    return <Tag key={index} color={item.color}>{item.name}</Tag>
+                }) : null
             }
         }]
         return <>

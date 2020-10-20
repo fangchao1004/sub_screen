@@ -7,6 +7,7 @@ import '../css/style.css'
 import { Row, Col } from 'antd';
 import FaceView from './FaceView';
 import moment from 'moment';
+import api from '../util/api';
 let lastCode = '';
 export default _ => {
     const [data, setData] = useState({})
@@ -31,6 +32,21 @@ export default _ => {
             // console.log('上次的code:', lastCode)
             if (result.data.data[0].code !== lastCode) {
                 console.log('order新的搜索记录；展示')
+                let content_list = JSON.parse(result.data.data[0].content)
+                // console.log('content_list:', content_list)
+                let response_store = await api.findStore(content_list.map((item) => item.store_id))
+                if (response_store.data.code === 0) {
+                    // console.log('response_store:', response_store.data.data)
+                    content_list.forEach((item) => {
+                        response_store.data.data.forEach((ele) => {
+                            if (item.store_id === ele.id) {
+                                item.tags = ele.tags
+                            }
+                        })
+                    })
+                }
+                result.data.data[0].content = JSON.stringify(content_list)
+                // console.log(object)
                 lastCode = result.data.data[0].code
                 let faceid = result.data.data[0].faceid
                 let data = result.data.data[0];
