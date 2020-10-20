@@ -24,28 +24,28 @@ export default _ => {
     const [data, setData] = useState([])
     const [timeStr, setTimeStr] = useState('')
     const columns = [{
-        title: '时间', width: 100, dataIndex: 'createdAt', key: 'createdAt', render: (_, record) => {
+        title: '时间', align: 'center', width: 100, dataIndex: 'createdAt', key: 'createdAt', render: (_, record) => {
             return <span style={{ color: '#1890ff' }}>{moment(record.createdAt).format('HH:mm:ss')}</span>
         }
     },
     {
-        title: '照片', dataIndex: 'fid', key: 'fid', render: (_, record) => {
+        title: '照片', align: 'center', dataIndex: 'fid', key: 'fid', render: (_, record) => {
             const imgUrl = 'https://xiaomei-face.oss-cn-hangzhou.aliyuncs.com/' + record.gid + '/' + record.sid + '/' + record.did + '/' + record.uid + '/' + record.fid + '.png'
-            return <img style={{ width: 50, height: 50 }} src={imgUrl} alt='' />
+            return <div><img style={{ width: 50, height: 50 }} src={imgUrl} alt='' /><div>{record.name || '-'}</div></div>
         }
     },
     {
-        title: '时间', width: 100, dataIndex: 'createdAt_next', key: 'createdAt_next', render: (_, record) => {
+        title: '时间', align: 'center', width: 100, dataIndex: 'createdAt_next', key: 'createdAt_next', render: (_, record) => {
             return record.next ? <span style={{ color: '#1890ff' }}>{moment(record.next.createdAt).format('HH:mm:ss')}</span> : ''
         }
     },
     {
-        title: '照片', dataIndex: 'next', key: 'fid_next', render: (_, record) => {
+        title: '照片', align: 'center', dataIndex: 'next', key: 'fid_next', render: (_, record) => {
             let imgUrl = 'https://xiaomei-face.oss-cn-hangzhou.aliyuncs.com/' + record.gid + '/' + record.sid + '/' + record.did + '/' + record.uid + '/' + record.fid + '.png'
             if (record.next) {
                 imgUrl = 'https://xiaomei-face.oss-cn-hangzhou.aliyuncs.com/' + record.next.gid + '/' + record.next.sid + '/' + record.next.did + '/' + record.next.uid + '/' + record.next.fid + '.png'
             }
-            return record.next ? <img style={{ width: 50, height: 50 }} src={imgUrl} alt='' /> : ''
+            return record.next ? <div><img style={{ width: 50, height: 50 }} src={imgUrl} alt='' /><div>{record.next.name || '-'}</div></div> : ''
         }
     },
     ]
@@ -77,7 +77,9 @@ export default _ => {
         let startOfDay = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
         let endOfDay = moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
 
-        let sql = `select * from faces where createdAt>='${startOfDay}' and createdAt<='${endOfDay}' order by id desc limit 20`
+        let sql = `select faces.*,users.name from faces 
+        left join (select users.name,users.faceid from users where effective = 1) users on users.faceid = faces.uid
+        where faces.createdAt>='${startOfDay}' and faces.createdAt<='${endOfDay}' order by faces.id desc limit 20`
         let result = await HttpApi.obs({ sql })
         if (result.data.code === 0) {
             let afterQueen = queenChange(result.data.data.map((item, index) => { item.key = index; return item }))
