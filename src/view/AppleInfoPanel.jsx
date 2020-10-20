@@ -64,7 +64,7 @@ export default props => {
                 <Col span={10}>
                     <Descriptions title="领料人信息" bordered size="large" column={2} >
                         <Descriptions.Item label={<div style={styles.font1}>{'姓名'}</div>}><div style={styles.font1}>{props.data.name}</div></Descriptions.Item>
-                        <Descriptions.Item label={<div style={styles.font1}>{'照片'}</div>}>{imgUrl.indexOf('undefined') === -1 ? <img style={{ width: 3 * 70, height: 4 * 70 }} src={imgUrl} alt='' /> : '-'}</Descriptions.Item>
+                        <Descriptions.Item label={<div style={styles.font1}>{'照片'}</div>}>{imgUrl.indexOf('undefined') === -1 ? <img style={{ width: 3 * 30, height: 4 * 30 }} src={imgUrl} alt='' /> : '-'}</Descriptions.Item>
                         <Descriptions.Item span={2} label={<div style={styles.font1}>{'联系方式'}</div>}><div style={styles.font1}>{props.data.username}</div></Descriptions.Item>
                         <Descriptions.Item span={2} label={<div style={styles.font1}>{'部门'}</div>}><div style={styles.font1}>{props.data.level_name}</div></Descriptions.Item>
                         <Descriptions.Item span={2} label={<div style={styles.font1}>{'专业'}</div>}><div style={styles.font1}>{props.data.major_name_all}</div></Descriptions.Item>
